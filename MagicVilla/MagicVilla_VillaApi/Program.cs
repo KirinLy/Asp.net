@@ -1,15 +1,26 @@
+using Microsoft.OpenApi.Models;
+
 namespace MagicVilla_VillaApi
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-        var builder = WebApplication.CreateBuilder(args);
-        var app = builder.Build();
+            var builder = WebApplication.CreateBuilder(args);
+            builder.Services.AddControllers();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"});
+            });
 
-        app.MapGet("/", () => "Hello World!");
+            var app = builder.Build();
 
-        app.Run();
+            app.UseSwagger();
+            app.UseSwaggerUI();
+
+            app.MapControllers();
+
+            app.Run();
         }
     }
 }
