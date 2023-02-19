@@ -1,6 +1,7 @@
 ﻿using MagicVilla_VillaApi.Data;
 using MagicVilla_VillaApi.Models;
 using MagicVilla_VillaApi.Models.Dtos;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MagicVilla_VillaApi.Controller
@@ -115,6 +116,41 @@ namespace MagicVilla_VillaApi.Controller
             if (villa == null)
             {
                 return NotFound();
+            }
+
+            villa.Name = villaDto.Name;
+
+            return NoContent();
+        }
+
+        [HttpPatch("UpdateVilla/{id:int}")]
+        [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+        [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
+        public IActionResult UpdateVilla(int id, [FromBody] JsonPatchDocument<VillaDto> patchDoc)
+        {
+            var villa = VillaStore.GetVillas().FirstOrDefault(x => x.Id == id);
+            if (villa == null)
+            {
+                return NotFound();
+            }
+
+            var villaDto = new VillaDto()
+            {
+                Id = villa.Id,
+                Name = villa.Name
+            };
+
+            patchDoc.ApplyTo(villaDto, ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (!TryValidateModel(villaDto))
+            {
+                return BadRequest(ModelState);
             }
 
             villa.Name = villaDto.Name;
