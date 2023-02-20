@@ -10,8 +10,9 @@ namespace MagicVilla_VillaApi.Controller
     //[ApiController]
     public class MagicVillaController : ControllerBase
     {
-        [HttpGet("GetVilla")]
-        public ActionResult<IEnumerable<VillaDto>> GetVilla()
+        [HttpGet()]
+        [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(IEnumerable<VillaDto>))]
+        public IActionResult GetVilla()
         {
             return Ok(VillaStore.GetVillas().Select(villa => new VillaDto()
             {
@@ -20,11 +21,11 @@ namespace MagicVilla_VillaApi.Controller
             }));
         }
 
-        [HttpGet("GetVilla/{id:int}", Name = "GetVilla")]
+        [HttpGet("{id:int}", Name = "GetVilla")]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(VillaDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
-        public ActionResult GetVilla(int id)
+        public IActionResult GetVilla(int id)
         {
             if (id <= 0)
             {
@@ -46,7 +47,7 @@ namespace MagicVilla_VillaApi.Controller
             return Ok(villaDto);
         }
 
-        [HttpPost("CreateVilla")]
+        [HttpPost()]
         [ProducesResponseType(statusCode: StatusCodes.Status200OK, Type = typeof(VillaDto))]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         public IActionResult CreateVilla([FromBody] VillaDto villaDto)
@@ -74,7 +75,7 @@ namespace MagicVilla_VillaApi.Controller
         }
 
 
-        [HttpDelete("UpdateVilla/{id:int}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
@@ -96,7 +97,7 @@ namespace MagicVilla_VillaApi.Controller
             return NoContent();
         }
 
-        [HttpPut("UpdateVilla/{id:int}")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
@@ -123,7 +124,7 @@ namespace MagicVilla_VillaApi.Controller
             return NoContent();
         }
 
-        [HttpPatch("UpdateVilla/{id:int}")]
+        [HttpPatch("{id:int}")]
         [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
         [ProducesResponseType(statusCode: StatusCodes.Status400BadRequest)]
         [ProducesResponseType(statusCode: StatusCodes.Status404NotFound)]
