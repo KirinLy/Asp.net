@@ -18,7 +18,7 @@ namespace MagicVilla_VillaApi.Controller
             {
                 Id = villa.Id,
                 Name = villa.Name
-            }));
+            }).ToList());
         }
 
         [HttpGet("{id:int}", Name = "GetVilla")]
@@ -41,7 +41,7 @@ namespace MagicVilla_VillaApi.Controller
             var villaDto = new VillaDto()
             {
                 Id = villa.Id,
-                Name = "9999"
+                Name = villa.Name
             };
 
             return Ok(villaDto);
