@@ -1,5 +1,6 @@
 using MagicVilla_VillaApi.Data;
 using MagicVilla_VillaApi.Log;
+using MagicVilla_VillaApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -22,9 +23,9 @@ namespace MagicVilla_VillaApi
             builder.Services.AddDbContext<ApplicationDBContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddSingleton<ILogging, LoggingV1>();
+            builder.Services.AddAutoMapper(typeof(Program));
 
-
-            var app = builder.Build();
+        var app = builder.Build();
 
             app.UseSwagger();
             app.UseSwaggerUI();
